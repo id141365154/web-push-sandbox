@@ -1,11 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { register } from "./serviceWorkerRegistration";
+import { urlBase64ToUint8Array } from "./urlBase64ToUint8Array";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
@@ -17,3 +19,68 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+register();
+
+if (typeof Notification !== "undefined") {
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
+    }
+  });
+}
+
+navigator.serviceWorker.ready
+  .then(function (registration) {
+    console.log("registration", registration);
+
+    if (!registration || !registration.pushManager) {
+      return;
+    }
+
+    // Use the PushManager to get the user's subscription to the push service.
+    return registration.pushManager
+      .getSubscription()
+      .then(async function (subscription) {
+        console.log("subscription", subscription);
+        // If a subscription was found, return it.
+        if (subscription) {
+          return subscription;
+        }
+
+        // Get the server's public key
+        // const response = await fetch("./vapidPublicKey");
+        // const vapidPublicKey = await response.text();
+        const vapidPublicKey =
+          "BIv707jBX9RggTcfdzjP8EJW3A25lezR8dgPu3Bv8e6xuiq5FK-k729UO1kHdQ-xHChAdfhhPqXUSaTWH9hy4HE";
+        // Chrome doesn't accept the base64-encoded (string) vapidPublicKey yet
+        // urlBase64ToUint8Array() is defined in /tools.js
+        const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+        console.log("convertedVapidKey", convertedVapidKey);
+
+        // Otherwise, subscribe the user (userVisibleOnly allows to specify that we don't plan to
+        // send notifications that don't have a visible effect for the user).
+        return registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: convertedVapidKey,
+        });
+      });
+  })
+  .then(function (subscription) {
+    if (!subscription) {
+      return;
+    }
+    //console.log("subscription", subscription.endpoint);
+    alert(subscription.endpoint);
+
+    return;
+    // Send the subscription details to the server using the Fetch API.
+    fetch("./register", {
+      method: "post",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        subscription: subscription,
+      }),
+    });
+  });
