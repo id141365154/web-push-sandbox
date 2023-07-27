@@ -37,6 +37,11 @@ navigator.serviceWorker.ready
       return;
     }
 
+    // @ts-ignore
+    registration.pushManager.getSubscription((event) => {
+      console.log("event", event);
+    });
+
     // Use the PushManager to get the user's subscription to the push service.
     return registration.pushManager
       .getSubscription()
@@ -74,13 +79,4 @@ navigator.serviceWorker.ready
 
     return;
     // Send the subscription details to the server using the Fetch API.
-    fetch("./register", {
-      method: "post",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        subscription: subscription,
-      }),
-    });
   });
