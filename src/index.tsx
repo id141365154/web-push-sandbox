@@ -49,7 +49,7 @@ if (navigator.serviceWorker) {
           // const response = await fetch("./vapidPublicKey");
           // const vapidPublicKey = await response.text();
           const vapidPublicKey =
-            "BIv707jBX9RggTcfdzjP8EJW3A25lezR8dgPu3Bv8e6xuiq5FK-k729UO1kHdQ-xHChAdfhhPqXUSaTWH9hy4HE";
+            "BMf6YbvbCiHlLTiqJId5Ub23AJIq2UXOlf-OOIeXOW6ttipRa3dilKmjdNX6eW_Jxsx_qCQfq3XbpU2hmbKjaEM";
           // Chrome doesn't accept the base64-encoded (string) vapidPublicKey yet
           // urlBase64ToUint8Array() is defined in /tools.js
           const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
