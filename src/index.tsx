@@ -42,6 +42,7 @@ if (navigator.serviceWorker) {
           console.log("subscription", subscription);
           // If a subscription was found, return it.
           if (subscription) {
+            JSON.stringify(subscription);
             return subscription;
           }
 
@@ -68,7 +69,8 @@ if (navigator.serviceWorker) {
         return;
       }
       //console.log("subscription", subscription.endpoint);
-      alert(subscription.endpoint);
+      console.log("subscription", JSON.stringify(subscription));
+      prompt("endpoint", subscription.endpoint);
 
       return;
       // Send the subscription details to the server using the Fetch API.
