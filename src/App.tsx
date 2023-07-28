@@ -1,8 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const requestPermissions = () => {
+    if (typeof Notification !== "undefined") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+        }
+      });
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +27,8 @@ function App() {
         >
           Learn React
         </a>
+
+        <button onClick={requestPermissions}>Request permissions</button>
       </header>
     </div>
   );
