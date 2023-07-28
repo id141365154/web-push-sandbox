@@ -69,8 +69,8 @@ if (navigator.serviceWorker) {
         return;
       }
       //console.log("subscription", subscription.endpoint);
-      console.log("subscription", JSON.stringify(subscription));
-      prompt("endpoint", subscription.endpoint);
+
+      prompt("subscription", JSON.stringify(subscription));
 
       return;
       // Send the subscription details to the server using the Fetch API.
