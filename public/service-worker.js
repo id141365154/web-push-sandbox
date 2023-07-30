@@ -16,12 +16,12 @@ self.addEventListener('push', function (event) {
         })
     );
 
-    const unreadCount = 10
+    const unreadCount = Number(payload)
 
     // Set or clear the badge.
     if (navigator.setAppBadge) {
         if (unreadCount && unreadCount > 0) {
-            navigator.setAppBadge(unreadCount);
+            navigator.setAppBadge((unreadCount));
         } else {
             navigator.clearAppBadge();
         }
