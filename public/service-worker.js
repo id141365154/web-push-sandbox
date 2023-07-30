@@ -15,4 +15,15 @@ self.addEventListener('push', function (event) {
             body: payload,
         })
     );
+
+    const unreadCount = 10
+
+    // Set or clear the badge.
+    if (navigator.setAppBadge) {
+        if (unreadCount && unreadCount > 0) {
+            navigator.setAppBadge(unreadCount);
+        } else {
+            navigator.clearAppBadge();
+        }
+    }
 });
